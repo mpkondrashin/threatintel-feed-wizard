@@ -42,11 +42,14 @@ func runCLI(apiKey, regionName, startStr, output string) {
 	store := &credential.KeyringStore{}
 
 	if apiKey == "" {
-		if saved, err := store.LoadAPIKey(); err == nil && saved != "" {
+		if envKey := os.Getenv("VISIONONE_API_KEY"); envKey != "" {
+			apiKey = envKey
+			log.Println("[cli] loaded API key from VISIONONE_API_KEY")
+		} else if saved, err := store.LoadAPIKey(); err == nil && saved != "" {
 			apiKey = saved
 			log.Println("[cli] loaded API key from keyring")
 		} else {
-			fmt.Fprintln(os.Stderr, "Error: --key is required (or save one via the GUI first)")
+			fmt.Fprintln(os.Stderr, "Error: --key, VISIONONE_API_KEY, or a saved key via the GUI is required")
 			os.Exit(1)
 		}
 	}

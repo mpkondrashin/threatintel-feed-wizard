@@ -72,7 +72,7 @@ The wizard walks you through entering your API key, selecting a region, picking 
 | Flag | Default | Description |
 |---|---|---|
 | `-cli` | `false` | Run in headless CLI mode |
-| `-key` | | API key (falls back to keyring if omitted) |
+| `-key` | | API key (falls back to `VISIONONE_API_KEY` env var, then keyring) |
 | `-region` | saved region or `us` | Region code (see table below) |
 | `-start` | last sync or 7 days ago | Start date-time in ISO 8601 UTC (e.g. `2024-01-01T00:00:00Z`) |
 | `-out` | `TAITI_YYMMDD.csv` | Output file path |
