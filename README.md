@@ -73,7 +73,7 @@ The wizard walks you through entering your API key, selecting a region, picking 
 |---|---|---|
 | `-cli` | `false` | Run in headless CLI mode |
 | `-key` | | API key (falls back to keyring if omitted) |
-| `-region` | `United States` | Regional server name |
+| `-region` | saved region or `United States` | Regional server name |
 | `-start` | last sync or 7 days ago | Start date-time in ISO 8601 UTC (e.g. `2024-01-01T00:00:00Z`) |
 | `-out` | `indicators.csv` | Output file path |
 

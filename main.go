@@ -24,7 +24,7 @@ var iconData []byte
 func main() {
 	cliMode := flag.Bool("cli", false, "Run in CLI mode (no GUI)")
 	apiKey := flag.String("key", "", "API key (CLI mode)")
-	region := flag.String("region", "United States", "Region name (CLI mode)")
+	region := flag.String("region", "", "Region name (CLI mode, default: saved region or United States)")
 	startFlag := flag.String("start", "", "Start date-time in ISO 8601 UTC (CLI mode, default: last sync or 7 days ago)")
 	output := flag.String("out", "", "Output CSV file path (CLI mode)")
 	flag.Parse()
@@ -47,6 +47,15 @@ func runCLI(apiKey, regionName, startStr, output string) {
 		} else {
 			fmt.Fprintln(os.Stderr, "Error: --key is required (or save one via the GUI first)")
 			os.Exit(1)
+		}
+	}
+
+	if regionName == "" {
+		if saved, err := store.LoadRegion(); err == nil && saved != "" {
+			regionName = saved
+			log.Printf("[cli] loaded region from keyring: %s", regionName)
+		} else {
+			regionName = "United States"
 		}
 	}
 
