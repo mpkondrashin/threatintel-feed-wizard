@@ -39,13 +39,11 @@ func (s *SaveScreen) Content() fyne.CanvasObject {
 	s.statusLabel = widget.NewLabel("")
 	s.statusLabel.Wrapping = fyne.TextWrapWord
 	s.statusLabel.Alignment = fyne.TextAlignCenter
-	s.statusLabel.Hide()
 
 	browseBtn := widget.NewButton("Browse", func() {
 		dialog.ShowFolderOpen(func(dir fyne.ListableURI, err error) {
 			if err != nil {
 				s.statusLabel.SetText(fmt.Sprintf("Error: %s", err.Error()))
-				s.statusLabel.Show()
 				return
 			}
 			if dir == nil {
@@ -93,7 +91,6 @@ func (s *SaveScreen) OnEnter(state *WizardState) {
 	base := fmt.Sprintf("TAITI_%02d%02d%02d", now.Year()%100, now.Month(), now.Day())
 	s.pathEntry.SetText(dedupFilename(base, ".csv"))
 	s.statusLabel.SetText("")
-	s.statusLabel.Hide()
 }
 
 // dedupFilename returns "name.ext" if it doesn't exist, otherwise
@@ -117,7 +114,6 @@ func (s *SaveScreen) save() {
 	path := s.pathEntry.Text
 	if path == "" {
 		s.statusLabel.SetText("Please enter a file path.")
-		s.statusLabel.Show()
 		return
 	}
 
@@ -131,14 +127,12 @@ func (s *SaveScreen) save() {
 	file, err := os.Create(absPath)
 	if err != nil {
 		s.statusLabel.SetText(fmt.Sprintf("Error: could not create file: %s", err.Error()))
-		s.statusLabel.Show()
 		return
 	}
 	defer file.Close()
 
 	if err := csvpkg.WriteCSV(file, s.state.Indicators); err != nil {
 		s.statusLabel.SetText(fmt.Sprintf("Error: could not write CSV: %s", err.Error()))
-		s.statusLabel.Show()
 		return
 	}
 

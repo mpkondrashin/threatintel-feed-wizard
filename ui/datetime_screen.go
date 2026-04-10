@@ -42,7 +42,6 @@ func (s *DateTimeScreen) Content() fyne.CanvasObject {
 	s.timeEntry.SetPlaceHolder("HH:MM (UTC, 24h)")
 
 	s.errorLabel = widget.NewLabel("")
-	s.errorLabel.Hide()
 
 	nextBtn := widget.NewButton("Next", func() {
 		if s.OnNext != nil {
@@ -89,13 +88,11 @@ func (s *DateTimeScreen) OnEnter(state *WizardState) {
 	s.datePicker.SetDate(&defaultTime)
 	s.timeEntry.SetText(fmt.Sprintf("%02d:%02d", defaultTime.Hour(), defaultTime.Minute()))
 	s.errorLabel.SetText("")
-	s.errorLabel.Hide()
 }
 
 func (s *DateTimeScreen) OnLeave(state *WizardState) error {
 	if s.datePicker.Date == nil {
 		s.errorLabel.SetText("Please select a date.")
-		s.errorLabel.Show()
 		return errors.New("date is required")
 	}
 
@@ -105,20 +102,17 @@ func (s *DateTimeScreen) OnLeave(state *WizardState) error {
 		parts := strings.Split(timeText, ":")
 		if len(parts) != 2 {
 			s.errorLabel.SetText("Time format must be HH:MM")
-			s.errorLabel.Show()
 			return errors.New("invalid time format")
 		}
 		var err error
 		hour, err = strconv.Atoi(parts[0])
 		if err != nil || hour < 0 || hour > 23 {
 			s.errorLabel.SetText("Hour must be 00-23")
-			s.errorLabel.Show()
 			return errors.New("invalid hour")
 		}
 		minute, err = strconv.Atoi(parts[1])
 		if err != nil || minute < 0 || minute > 59 {
 			s.errorLabel.SetText("Minute must be 00-59")
-			s.errorLabel.Show()
 			return errors.New("invalid minute")
 		}
 	}
@@ -129,6 +123,5 @@ func (s *DateTimeScreen) OnLeave(state *WizardState) error {
 	log.Printf("[datetime] range: %s → %s", state.StartTime.Format(time.RFC3339), state.EndTime.Format(time.RFC3339))
 
 	s.errorLabel.SetText("")
-	s.errorLabel.Hide()
 	return nil
 }

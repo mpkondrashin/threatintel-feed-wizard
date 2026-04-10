@@ -47,7 +47,6 @@ func (s *APIKeyScreen) Content() fyne.CanvasObject {
 	s.regionSelect.SetSelected(api.Regions[0].Name)
 
 	s.errorLabel = widget.NewLabel("")
-	s.errorLabel.Hide()
 
 	nextBtn := widget.NewButton("Next", func() {
 		if s.OnNext != nil {
@@ -90,20 +89,17 @@ func (s *APIKeyScreen) OnEnter(state *WizardState) {
 		s.regionSelect.SetSelected(regionName)
 	}
 	s.errorLabel.SetText("")
-	s.errorLabel.Hide()
 }
 
 func (s *APIKeyScreen) OnLeave(state *WizardState) error {
 	key := s.apiKeyEntry.Text
 	if key == "" {
 		s.errorLabel.SetText("API key is required.")
-		s.errorLabel.Show()
 		return errors.New("API key is required")
 	}
 	if err := s.store.SaveAPIKey(key); err != nil {
 		msg := fmt.Sprintf("Could not save API key securely: %v", err)
 		s.errorLabel.SetText(msg)
-		s.errorLabel.Show()
 		return fmt.Errorf("save api key: %w", err)
 	}
 
@@ -118,7 +114,6 @@ func (s *APIKeyScreen) OnLeave(state *WizardState) error {
 	if err := s.store.SaveRegion(selectedName); err != nil {
 		msg := fmt.Sprintf("Could not save region: %v", err)
 		s.errorLabel.SetText(msg)
-		s.errorLabel.Show()
 		return fmt.Errorf("save region: %w", err)
 	}
 
@@ -126,6 +121,5 @@ func (s *APIKeyScreen) OnLeave(state *WizardState) error {
 	state.Region = region
 	log.Printf("[apikey] saved key (len=%d) region=%s", len(key), region.Name)
 	s.errorLabel.SetText("")
-	s.errorLabel.Hide()
 	return nil
 }
