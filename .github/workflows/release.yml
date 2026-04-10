@@ -42,22 +42,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-mingw-w64-x86-64 gcc-aarch64-linux-gnu
 
+      - name: Install Fyne CLI
+        if: matrix.goos == 'windows'
+        run: go install fyne.io/fyne/v2/cmd/fyne@latest
+
       - name: Build
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: 1
         run: |
-          EXT=""
           if [ "${{ matrix.goos }}" = "windows" ]; then
-            EXT=".exe"
             if [ "${{ matrix.goarch }}" = "amd64" ]; then
               export CC=x86_64-w64-mingw32-gcc
             elif [ "${{ matrix.goarch }}" = "arm64" ]; then
               export CC=aarch64-w64-mingw32-gcc
             fi
+            fyne package -os windows -icon icon.png -name threatintel-feed-wizard
+          else
+            go build -o threatintel-feed-wizard .
           fi
-          go build -o "threatintel-feed-wizard${EXT}" .
 
       - name: Ad-hoc codesign (macOS)
         if: matrix.goos == 'darwin'
