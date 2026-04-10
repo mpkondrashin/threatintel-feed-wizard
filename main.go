@@ -106,7 +106,9 @@ func runCLI(apiKey, regionName, startStr, output string) {
 	log.Printf("[cli] downloaded %d indicators", len(indicators))
 
 	if output == "" {
-		output = "indicators.csv"
+		now := time.Now()
+		base := fmt.Sprintf("TAITI_%02d%02d%02d", now.Year()%100, now.Month(), now.Day())
+		output = dedupFilename(base, ".csv")
 	}
 	f, err := os.Create(output)
 	if err != nil {
@@ -124,6 +126,21 @@ func runCLI(apiKey, regionName, startStr, output string) {
 	// Persist end time for next run.
 	if err := store.SaveLastSync(endTime.Format(time.RFC3339)); err != nil {
 		log.Printf("[cli] warning: could not save last sync: %v", err)
+	}
+}
+
+// dedupFilename returns "name.ext" if it doesn't exist, otherwise
+// "name (1).ext", "name (2).ext", etc.
+func dedupFilename(name, ext string) string {
+	candidate := name + ext
+	if _, err := os.Stat(candidate); os.IsNotExist(err) {
+		return candidate
+	}
+	for i := 1; ; i++ {
+		candidate = fmt.Sprintf("%s (%d)%s", name, i, ext)
+		if _, err := os.Stat(candidate); os.IsNotExist(err) {
+			return candidate
+		}
 	}
 }
 
