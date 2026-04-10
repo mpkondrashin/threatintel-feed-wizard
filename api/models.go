@@ -5,20 +5,21 @@ import "encoding/json"
 // Region represents a Trend Vision One regional API server.
 type Region struct {
 	Name    string
+	Code    string
 	BaseURL string
 }
 
 // Regions lists all nine supported Trend Vision One regional servers.
 var Regions = []Region{
-	{Name: "United States", BaseURL: "https://api.xdr.trendmicro.com"},
-	{Name: "Germany", BaseURL: "https://api.eu.xdr.trendmicro.com"},
-	{Name: "Singapore", BaseURL: "https://api.sg.xdr.trendmicro.com"},
-	{Name: "Japan", BaseURL: "https://api.xdr.trendmicro.co.jp"},
-	{Name: "Australia", BaseURL: "https://api.au.xdr.trendmicro.com"},
-	{Name: "India", BaseURL: "https://api.in.xdr.trendmicro.com"},
-	{Name: "United Arab Emirates", BaseURL: "https://api.mea.xdr.trendmicro.com"},
-	{Name: "United Kingdom", BaseURL: "https://api.uk.xdr.trendmicro.com"},
-	{Name: "Canada", BaseURL: "https://api.ca.xdr.trendmicro.com"},
+	{Name: "United States", Code: "us", BaseURL: "https://api.xdr.trendmicro.com"},
+	{Name: "Germany", Code: "eu", BaseURL: "https://api.eu.xdr.trendmicro.com"},
+	{Name: "Singapore", Code: "sg", BaseURL: "https://api.sg.xdr.trendmicro.com"},
+	{Name: "Japan", Code: "jp", BaseURL: "https://api.xdr.trendmicro.co.jp"},
+	{Name: "Australia", Code: "au", BaseURL: "https://api.au.xdr.trendmicro.com"},
+	{Name: "India", Code: "in", BaseURL: "https://api.in.xdr.trendmicro.com"},
+	{Name: "United Arab Emirates", Code: "mea", BaseURL: "https://api.mea.xdr.trendmicro.com"},
+	{Name: "United Kingdom", Code: "uk", BaseURL: "https://api.uk.xdr.trendmicro.com"},
+	{Name: "Canada", Code: "ca", BaseURL: "https://api.ca.xdr.trendmicro.com"},
 }
 
 // Indicator represents a STIX 2.1 Indicator object.

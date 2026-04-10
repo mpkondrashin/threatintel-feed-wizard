@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"threatintel-feed-wizard/api"
@@ -24,7 +25,7 @@ var iconData []byte
 func main() {
 	cliMode := flag.Bool("cli", false, "Run in CLI mode (no GUI)")
 	apiKey := flag.String("key", "", "API key (CLI mode)")
-	region := flag.String("region", "", "Region name (CLI mode, default: saved region or United States)")
+	region := flag.String("region", "", "Region code (CLI mode, e.g. us, eu, sg, jp, au, in, mea, uk, ca)")
 	startFlag := flag.String("start", "", "Start date-time in ISO 8601 UTC (CLI mode, default: last sync or 7 days ago)")
 	output := flag.String("out", "", "Output CSV file path (CLI mode)")
 	flag.Parse()
@@ -55,14 +56,14 @@ func runCLI(apiKey, regionName, startStr, output string) {
 			regionName = saved
 			log.Printf("[cli] loaded region from keyring: %s", regionName)
 		} else {
-			regionName = "United States"
+			regionName = "us"
 		}
 	}
 
 	var region api.Region
 	found := false
 	for _, r := range api.Regions {
-		if r.Name == regionName {
+		if strings.EqualFold(r.Code, regionName) || strings.EqualFold(r.Name, regionName) {
 			region = r
 			found = true
 			break
@@ -71,7 +72,7 @@ func runCLI(apiKey, regionName, startStr, output string) {
 	if !found {
 		fmt.Fprintf(os.Stderr, "Error: unknown region %q\nAvailable regions:\n", regionName)
 		for _, r := range api.Regions {
-			fmt.Fprintf(os.Stderr, "  - %s\n", r.Name)
+			fmt.Fprintf(os.Stderr, "  %s\t%s\n", r.Code, r.Name)
 		}
 		os.Exit(1)
 	}

@@ -66,18 +66,30 @@ The wizard walks you through entering your API key, selecting a region, picking 
 ### CLI
 
 ```bash
-./threatintel-feed-wizard -cli -key YOUR_API_KEY -region "Germany" -out indicators.csv
+./threatintel-feed-wizard -cli -key YOUR_API_KEY -region eu -out indicators.csv
 ```
 
 | Flag | Default | Description |
 |---|---|---|
 | `-cli` | `false` | Run in headless CLI mode |
 | `-key` | | API key (falls back to keyring if omitted) |
-| `-region` | saved region or `United States` | Regional server name |
+| `-region` | saved region or `us` | Region code (see table below) |
 | `-start` | last sync or 7 days ago | Start date-time in ISO 8601 UTC (e.g. `2024-01-01T00:00:00Z`) |
 | `-out` | `TAITI_YYMMDD.csv` | Output file path |
 
-Available regions: United States, Germany, Singapore, Japan, Australia, India, United Arab Emirates, United Kingdom, Canada.
+Available regions:
+
+| Code | Region |
+|---|---|
+| `us` | United States |
+| `eu` | Germany |
+| `sg` | Singapore |
+| `jp` | Japan |
+| `au` | Australia |
+| `in` | India |
+| `mea` | United Arab Emirates |
+| `uk` | United Kingdom |
+| `ca` | Canada |
 
 ## CSV output
 
