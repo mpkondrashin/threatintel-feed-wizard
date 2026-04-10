@@ -20,7 +20,7 @@ Each release includes builds for:
 2. Download the `.zip` for your platform
 3. Extract and run `threatintel-feed-wizard` (or `threatintel-feed-wizard.exe` on Windows)
 
-> On macOS you may need to right-click → Open the first time to bypass Gatekeeper.
+> On macOS you may need to right-click → Open the first time to allow the app past Gatekeeper.
 
 ## Features
 

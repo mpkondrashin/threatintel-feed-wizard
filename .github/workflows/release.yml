@@ -59,6 +59,10 @@ jobs:
           fi
           go build -o "threatintel-feed-wizard${EXT}" .
 
+      - name: Ad-hoc codesign (macOS)
+        if: matrix.goos == 'darwin'
+        run: codesign -s - --force threatintel-feed-wizard
+
       - name: Package
         run: |
           EXT=""
