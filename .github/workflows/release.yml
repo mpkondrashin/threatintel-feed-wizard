@@ -71,7 +71,11 @@ jobs:
           fi
           VERSION="${GITHUB_REF_NAME}"
           ZIP_NAME="threatintel-feed-wizard-${VERSION}-${{ matrix.name }}.zip"
-          zip "${ZIP_NAME}" "threatintel-feed-wizard${EXT}"
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            zip "${ZIP_NAME}" "threatintel-feed-wizard${EXT}" opengl32.dll
+          else
+            zip "${ZIP_NAME}" "threatintel-feed-wizard${EXT}"
+          fi
           echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
 
       - uses: actions/upload-artifact@v4
