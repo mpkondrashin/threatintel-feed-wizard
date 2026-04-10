@@ -25,10 +25,7 @@ jobs:
             goos: windows
             goarch: amd64
             name: windows-intel
-          - os: ubuntu-latest
-            goos: windows
-            goarch: arm64
-            name: windows-arm
+
 
     runs-on: ${{ matrix.os }}
 

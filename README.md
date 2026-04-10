@@ -15,7 +15,6 @@ Each release includes builds for:
 | macOS | Intel (x86_64) | `threatintel-feed-wizard-vX.X.X-macos-intel.zip` |
 | macOS | Apple Silicon (arm64) | `threatintel-feed-wizard-vX.X.X-macos-arm.zip` |
 | Windows | Intel (x86_64) | `threatintel-feed-wizard-vX.X.X-windows-intel.zip` |
-| Windows | ARM64 | `threatintel-feed-wizard-vX.X.X-windows-arm.zip` |
 
 1. Go to the [latest release](../../releases/latest)
 2. Download the `.zip` for your platform
