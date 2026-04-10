@@ -32,6 +32,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Sync FyneApp.toml version with tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i.bak "s/Version = \".*\"/Version = \"${VERSION}\"/" FyneApp.toml
+          rm -f FyneApp.toml.bak
+          echo "Set FyneApp.toml version to ${VERSION}"
+
       - uses: actions/setup-go@v5
         with:
           go-version: '1.23'
