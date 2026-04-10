@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            goos: darwin
+            goarch: amd64
+            name: macos-intel
+          - os: macos-latest
+            goos: darwin
+            goarch: arm64
+            name: macos-arm
+          - os: ubuntu-latest
+            goos: windows
+            goarch: amd64
+            name: windows-intel
+          - os: ubuntu-latest
+            goos: windows
+            goarch: arm64
+            name: windows-arm
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Install Linux dependencies (for Fyne CGo)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mingw-w64-x86-64 gcc-aarch64-linux-gnu
+
+      - name: Build
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 1
+        run: |
+          EXT=""
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            EXT=".exe"
+            if [ "${{ matrix.goarch }}" = "amd64" ]; then
+              export CC=x86_64-w64-mingw32-gcc
+            elif [ "${{ matrix.goarch }}" = "arm64" ]; then
+              export CC=aarch64-w64-mingw32-gcc
+            fi
+          fi
+          go build -o "threatintel-feed-wizard${EXT}" .
+
+      - name: Package
+        run: |
+          EXT=""
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            EXT=".exe"
+          fi
+          VERSION="${GITHUB_REF_NAME}"
+          ZIP_NAME="threatintel-feed-wizard-${VERSION}-${{ matrix.name }}.zip"
+          zip "${ZIP_NAME}" "threatintel-feed-wizard${EXT}"
+          echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: ${{ env.ZIP_NAME }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*.zip
+          generate_release_notes: true

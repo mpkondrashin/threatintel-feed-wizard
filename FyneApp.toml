@@ -1,0 +1,6 @@
+[Details]
+  Icon = "icon.png"
+  Name = "ThreatIntel Feed Wizard"
+  ID = "com.threatintel.feedwizard"
+  Version = "1.0.0"
+  Build = 1

@@ -1,0 +1,19 @@
+# Binary
+threatintel-feed-wizard
+threatintel-feed-wizard.exe
+
+# CSV data files
+*.csv
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Duplicate image folder
+images copy/
+
+# OpenAPI spec (large reference file)
+sp-api-open-v3.0.json
