@@ -64,7 +64,7 @@ func (s *DoneScreen) OnEnter(state *WizardState) {
 	fileURL, err := url.Parse("file://" + absPath)
 	if err != nil {
 		log.Printf("[done] could not parse file URL: %v", err)
-		s.fileLink.SetText(absPath)
+		s.fileLink.SetText(displayName)
 		s.fileLink.SetURL(nil)
 	} else {
 		s.fileLink.SetText(displayName)
