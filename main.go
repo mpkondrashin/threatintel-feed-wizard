@@ -153,7 +153,7 @@ func runGUI() {
 	a.SetIcon(fyne.NewStaticResource("icon.png", iconData))
 	w := a.NewWindow("ThreatIntel Feed Wizard")
 	w.SetFixedSize(true)
-	w.Resize(fyne.NewSize(560, 380))
+	w.Resize(fyne.NewSize(560, 460))
 
 	store := &credential.KeyringStore{}
 	state := &ui.WizardState{}
@@ -166,7 +166,7 @@ func runGUI() {
 	doneScreen := &ui.DoneScreen{App: a}
 
 	screens := []ui.WizardScreen{introScreen, apiKeyScreen, dateTimeScreen, downloadScreen, saveScreen, doneScreen}
-	windowSize := fyne.NewSize(560, 380)
+	windowSize := fyne.NewSize(560, 460)
 	ctrl := ui.NewWizardController(w, state, screens, windowSize)
 
 	introScreen.OnNext = ctrl.Next
