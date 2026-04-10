@@ -35,6 +35,8 @@ var iocTypeMap = map[string]string{
 	"file:hashes.'MD5'":             "md5",
 	"file:hashes.SHA-256":           "sha256",
 	"file:hashes.SHA-1":             "sha1",
+	"file:hashes.SHA1":              "sha1",
+	"file:hashes.SHA256":            "sha256",
 	"file:hashes.MD5":               "md5",
 	"file:name":                     "filename",
 	"windows-registry-key:key":      "regkey",
