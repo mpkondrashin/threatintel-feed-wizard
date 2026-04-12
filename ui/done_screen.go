@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/url"
 	"path/filepath"
+	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -61,7 +62,12 @@ func (s *DoneScreen) OnEnter(state *WizardState) {
 	// Show the filename as a clickable link that opens the file.
 	absPath := state.SavedPath
 	displayName := filepath.Base(absPath)
-	fileURL, err := url.Parse("file://" + absPath)
+	// On Windows absPath is like C:\Users\..., which needs file:///C:/...
+	urlPath := filepath.ToSlash(absPath)
+	if !strings.HasPrefix(urlPath, "/") {
+		urlPath = "/" + urlPath
+	}
+	fileURL, err := url.Parse("file://" + urlPath)
 	if err != nil {
 		log.Printf("[done] could not parse file URL: %v", err)
 		s.fileLink.SetText(displayName)
